@@ -87,4 +87,3 @@ export default function PostMain({ post }: PostMainCompTypes) {
 }
 
 
-// 55:54

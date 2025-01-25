@@ -1,15 +1,20 @@
 import { useState } from "react";
-import { Like, PostMainLikesCompTypes } from "../types";
+import { Like, PostMainLikesCompTypes, Comment } from "../types";
 import { AiFillHeart } from "react-icons/ai";
 import { BiLoaderCircle } from "react-icons/bi";
+import { useRouter } from "next/navigation";
+import { FaCommentDots, FaShare } from "react-icons/fa";
 
 
 export default function PostMainLikes({ post }: PostMainLikesCompTypes) {
-  
+    const router = useRouter()
+
     const [hasClickedLike, setHasClickedLike] = useState<boolean>(false)
     const [userLiked, setUserLiked] = useState<boolean>(false)
 
     const [likes, setLikes] = useState<Like[]>([])
+    const [comments, setComments] = useState<Comment[]>([])
+
     const likeOrUnlike = () => {
         console.log('likeOrUnlike')
     }
@@ -36,8 +41,31 @@ export default function PostMainLikes({ post }: PostMainLikesCompTypes) {
                     {likes?.length}
                 </span>
             </div>
+
+            <button
+                onClick={() => router.push(`/post/${post?.id}/${post?.profile?.user_id}`)}
+                className="pb-4 text-center"
+            >
+                <div className="rounded-full bg-gray-200 p-2 cursor-pointer">
+                    <FaCommentDots size="25" />
+                </div>
+                <span className="text-xs text-gray-800 font-semibold">
+                    {comments?.length}
+                </span>
+            </button>
+
+            <button className="text-center">
+                <div className="rounded-full bg-gray-200 p-2 cursor-pointer">
+                    <FaShare size="25" />
+                </div>
+                <span className="text-xs text-gray-800 font-semibold">
+                    55
+                </span>
+            </button>
         </div>
       </div>
     </>
   );
 }
+
+// 57:38
