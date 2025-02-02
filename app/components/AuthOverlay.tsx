@@ -8,7 +8,7 @@ import Register from '@/app/components/auth/Register'
 
 export default function AuthOverlay() {
 
-  let [isRegister, setIsRegister] = useState<boolean>(true);
+  let [isRegister, setIsRegister] = useState<boolean>(false);
 
   return (
     <>
