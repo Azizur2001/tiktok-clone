@@ -1,16 +1,35 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+// import AuthOverlay from "./components/AuthOverlay";
+// import UserProvider from "./context/user";
+// import "./globals.css";
+// import type { Metadata } from "next";
+
+// export const metadata: Metadata = {
+//   title: "TikTok Clone",
+//   description: "TikTok Clone",
+// };
+
+// export default function RootLayout({
+//   children,
+// }: {
+//   children: React.ReactNode;
+// }) {
+//   return (
+//     <html lang="en">
+//       <UserProvider>
+//         <body>
+//           <AuthOverlay />
+//           {children}
+//         </body>
+//       </UserProvider>
+
+//     </html>
+//   );
+// }
+
+import UserProvider from "./context/user";
+// import AllOverlays from "@/app/components/AllOverlays";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "TikTok Clone",
@@ -19,12 +38,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <UserProvider>
+        <body>
+          {children}
+        </body>
+      </UserProvider>
     </html>
   );
 }

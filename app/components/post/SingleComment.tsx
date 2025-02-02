@@ -50,7 +50,7 @@ export default function SingleComment({ comment, params }: SingleCommentCompType
                                 </button>
                             ):null}
                         </div>
-
+                        <p className="text-[15px] font-light">{comment.text}</p>
                     </div>
                 </div>
             </div>
@@ -58,4 +58,3 @@ export default function SingleComment({ comment, params }: SingleCommentCompType
     )
 }
 
-// 2:17:21
