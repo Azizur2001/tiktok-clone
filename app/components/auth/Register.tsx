@@ -220,6 +220,7 @@ export default function Register() {
   return (
     <>
       <div>
+        {String(contextUser?.user?.name)}
         <h1 className="text-center text-[28px] mb-4 font-bold">Register</h1>
 
         <div className="px-6 pb-2">
@@ -290,3 +291,5 @@ export default function Register() {
     </>
   );
 }
+
+// 3:00:12
