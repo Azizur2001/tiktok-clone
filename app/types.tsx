@@ -45,6 +45,14 @@ export interface Post {
   created_at: string;
 }
 
+export interface Profile {
+  id: string;
+  user_id: string;
+  name: string;
+  bio: string;
+  image: string;
+}
+
 export interface CommentWithProfile {
   id: string;
   user_id: string;

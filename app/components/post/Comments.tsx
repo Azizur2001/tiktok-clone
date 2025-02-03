@@ -3,31 +3,34 @@ import ClientOnly from "../ClientOnly";
 import SingleComment from "./SingleComment";
 import { useState } from "react";
 import { BiLoaderCircle } from "react-icons/bi";
+import { useCommentStore } from "@/app/stores/comment";
+import { useGeneralStore } from "@/app/stores/general";
+import { useUser } from "@/app/context/user";
+import useCreateComment from "@/app/hooks/useCreateComment";
 
 export default function Comments({ params }: CommentsCompTypes) {
+  let { commentsByPost, setCommentsByPost } = useCommentStore();
+  let { setIsLoginOpen } = useGeneralStore();
 
-    const [comment, setComment] = useState<string>('')
-    const [inputFocused, setInputFocused] = useState<boolean>(false)
-    const [isUploading, setIsUploading] = useState<boolean>(false)
+  const contextUser = useUser();
+  const [comment, setComment] = useState<string>("");
+  const [inputFocused, setInputFocused] = useState<boolean>(false);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
 
-  const commentsByPost = [
-    {
-      id: "123",
-      user_id: "456",
-      post_id: "987",
-      text: "this is some text",
-      created_at: "date here",
-      profile: {
-        user_id: "456",
-        name: "User 1",
-        image: "https://placehold.co/100",
-      },
+  const addComment = async () => {
+    if (!contextUser?.user) return setIsLoginOpen(true);
+
+    try {
+      setIsUploading(true);
+      await useCreateComment(contextUser?.user?.id, params?.postId, comment);
+      setCommentsByPost(params?.postId);
+      setComment("");
+      setIsUploading(false);
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
-  ];
-
-  const addComment = () => {
-    console.log('addComment')
-  }
+  };
 
   return (
     <>
@@ -51,7 +54,6 @@ export default function Comments({ params }: CommentsCompTypes) {
           )}
         </ClientOnly>
         <div className="mb-28" />
-
       </div>
 
       <div
@@ -59,38 +61,44 @@ export default function Comments({ params }: CommentsCompTypes) {
         className="absolute flex items-center justify-between bottom-0 bg-white h-[85px] lg:max-w-[550px] w-full py-5 border-t-2"
       >
         <div
-            className={`
+          className={`
                 bg-[#F1F1F2] flex items-center rounded-lg w-full lg:max-w-[420px]
-                ${inputFocused ? 'border-2 border-gray-400' : 'border-2 border-[#F1F1F2]'}
+                ${
+                  inputFocused
+                    ? "border-2 border-gray-400"
+                    : "border-2 border-[#F1F1F2]"
+                }
             `}
         >
-            <input 
-                onFocus={() => setInputFocused(true)}
-                onBlur={() => setInputFocused(false)}
-                onChange={e => setComment(e.target.value)}
-                value={comment || ''}
-                className="bf-[#F1F1F2] text-[14px] focus:outline-none w-full lg:max-w-[420px] p-2 rounded-lg"
-                type="text"
-                placeholder="Add comment..."
-            />
-
+          <input
+            onFocus={() => setInputFocused(true)}
+            onBlur={() => setInputFocused(false)}
+            onChange={(e) => setComment(e.target.value)}
+            value={comment || ""}
+            className="bf-[#F1F1F2] text-[14px] focus:outline-none w-full lg:max-w-[420px] p-2 rounded-lg"
+            type="text"
+            placeholder="Add comment..."
+          />
         </div>
-            {!isUploading ? (
-                <button
-                    disabled={!comment}
-                    onClick={() => addComment()}
-                    className={`
+        {!isUploading ? (
+          <button
+            disabled={!comment}
+            onClick={() => addComment()}
+            className={`
                         font-semibold text-sm ml-5 pr-1
-                        ${comment ? 'text-[#F02C56] cursor-pointer' : 'text-gray-400'}
+                        ${
+                          comment
+                            ? "text-[#F02C56] cursor-pointer"
+                            : "text-gray-400"
+                        }
                     `}
-                >
-                    Post
-                </button>
-            ) : (
-                <BiLoaderCircle className="animate-spin" color="E91E62" size="20" />
-            )}
+          >
+            Post
+          </button>
+        ) : (
+          <BiLoaderCircle className="animate-spin" color="E91E62" size="20" />
+        )}
       </div>
     </>
   );
 }
-
