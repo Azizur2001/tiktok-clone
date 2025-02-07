@@ -22,15 +22,14 @@ export default function SingleComment({
     if (!res) return;
 
     try {
-        setisDeleteing(true)
-        await useDeleteComment(comment?.id)
-        setCommentsByPost(params?.postId)
-        setisDeleteing(false)
+      setisDeleteing(true);
+      await useDeleteComment(comment?.id);
+      setCommentsByPost(params?.postId);
+      setisDeleteing(false);
     } catch (error) {
-        console.log(error)
-        alert(error)
+      console.log(error);
+      alert(error);
     }
-
   };
 
   return (
